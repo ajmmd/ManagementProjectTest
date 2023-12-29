@@ -8,9 +8,12 @@ import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yizhi.common.annotation.Log;
+import com.yizhi.common.config.Constant;
 import com.yizhi.common.controller.BaseController;
 import com.yizhi.common.utils.*;
 import com.yizhi.student.domain.ClassDO;
+import com.yizhi.student.domain.CollegeDO;
+import com.yizhi.student.domain.MajorDO;
 import com.yizhi.student.service.ClassService;
 import com.yizhi.student.service.CollegeService;
 import com.yizhi.student.service.MajorService;
@@ -31,7 +34,7 @@ import com.yizhi.student.service.StudentInfoService;
  
 @Controller
 @RequestMapping("/student/studentInfo")
-public class StudentInfoController {
+public class StudentInfoController extends BaseController{
 
 	
 
@@ -41,6 +44,16 @@ public class StudentInfoController {
 
 
 
+	@Log("学生信息保存")
+	@ResponseBody
+	@PostMapping("/save")
+	@RequiresPermissions("student:college:add")
+	public R save( StudentInfoDO studentInfoDO){
+		if(studentInfoService.save(studentInfoDO)>0){
+			return R.ok();
+		}
+		return R.error();
+	}
 	/**
 	 * 可分页 查询
 	 */
@@ -49,7 +62,16 @@ public class StudentInfoController {
 	@RequiresPermissions("student:studentInfo:studentInfo")
 	public PageUtils list(@RequestParam Map<String, Object> params){
 
-		return null;
+		//查询列表数据
+		if (params.get("sort")!=null) {
+			params.put("sort",BeanHump.camelToUnderline(params.get("sort").toString()));
+		}
+		//查询列表数据
+		Query query = new Query(params);
+		List<StudentInfoDO> majorList = studentInfoService.list(query);
+		int total = studentInfoService.count(query);
+		PageUtils pageUtils = new PageUtils(majorList, total,query.getCurrPage(),query.getPageSize());
+		return pageUtils;
 
 	}
 
@@ -63,7 +85,13 @@ public class StudentInfoController {
 	@RequiresPermissions("student:studentInfo:edit")
 	public R update(StudentInfoDO studentInfo){
 
-		return null;
+		if (Constant.DEMO_ACCOUNT.equals(getUsername())) {
+			return R.error(1, "演示系统不允许修改,完整体验请部署程序");
+		}
+		if (studentInfoService.update(studentInfo) > 0) {
+			return R.ok();
+		}
+		return R.error();
 	}
 
 	/**
@@ -74,7 +102,11 @@ public class StudentInfoController {
 	@ResponseBody
 	@RequiresPermissions("student:studentInfo:remove")
 	public R remove( Integer id){
-		return null;
+		if (studentInfoService.remove(id) > 0) {
+			return R.ok();
+		}
+
+		return R.error();
 	}
 	
 	/**
@@ -86,7 +118,11 @@ public class StudentInfoController {
 	@RequiresPermissions("student:studentInfo:batchRemove")
 	public R remove(@RequestParam("ids[]") Integer[] ids){
 
-		return null;
+		int r = studentInfoService.batchRemove(ids);
+		if (r > 0) {
+			return R.ok();
+		}
+		return R.error();
 	}
 
 

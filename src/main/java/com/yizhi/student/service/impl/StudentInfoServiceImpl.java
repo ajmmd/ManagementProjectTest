@@ -3,6 +3,7 @@ package com.yizhi.student.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -42,11 +43,16 @@ public class StudentInfoServiceImpl implements StudentInfoService {
 	
 	@Override
 	public int save(StudentInfoDO studentInfo){
+		studentInfo.setAddTime(new Date());
+		studentInfo.setEditTime(new Date());
+
 		return studentInfoDao.save(studentInfo);
+
 	}
 	
 	@Override
 	public int update(StudentInfoDO studentInfo){
+		studentInfo.setEditTime(new Date());
 		return studentInfoDao.update(studentInfo);
 	}
 	

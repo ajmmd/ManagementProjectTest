@@ -2,8 +2,189 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.yizhi.student.dao.StudentInfoDao">
-	
-	
+    <insert id="save" parameterType="com.yizhi.student.dao.StudentInfoDao"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into s_student_info
+        (id,
+         student_id,
+         exam_id,
+         student_name,
+         card_id,
+         birthplace,
+         foreign_lanaguage,
+         class_id,
+         certify,
+         mail_address,
+         nation,
+         student_sex,
+         political,
+         telephone,
+         subject_type,
+         tocollege,
+         tocampus,
+         tomajor,
+         grade,
+         isstate,
+         birthday,
+         note,
+         add_time,
+         add_userid,
+         edit_time,
+         edit_userid)
+        values (#{id},
+                #{studentId},
+                #{examId},
+                #{studentName},
+                #{cardId},
+                #{birthplace},
+                #{foreignLanaguage},
+                #{classId},
+                #{certify},
+                #{mailAddress},
+                #{nation},
+                #{studentSex},
+                #{political},
+                #{telephone},
+                #{subjectType},
+                #{tocollege},
+                #{tocampus},
+                #{tomajor},
+                #{grade},
+                #{isstate},
+                #{birthday},
+                #{note},
+                #{addTime},
+                #{addUserid},
+                #{editTime},
+                #{editUserid})
+    </insert>
+    <update id="update">
+        update s_student_info
+        <set>
+            <if test="id != null and id != ''">id = #{id},</if>
+            <if test="studentId !=null and studentId !=''">student_id= #{studentId},</if>
+            <if test="examId !=null and examId !=''">exam_id= #{examId},</if>
+            <if test=" studentName !=null and studentName !=''">student_name= #{studentName},</if>
+            <if test=" cardId !=null and cardId !=''"> card_id=#{cardId},</if>
+            <if test="tomajor != null and tomajor != ''"> tomajor = #{tomajor},</if>
+            <if test="tocollege != null and tocollege != ''"> tocollege = #{tocollege},</if>
+            <if test="classId != null and classId != ''">class_id = #{classId},</if>
+            <if test=" birthplace !=null and birthplace !=''"> birthplace= #{birthplace},</if>
+            <if test="foreignLanaguage !=null and foreignLanaguage !=''"> foreign_lanaguage= #{foreignLanaguage},</if>
+            <if test=" certify !=null and certify !=''"> certify = #{certify},</if>
+            <if test=" mailAddress !=null and mailAddress !=''"> mail_address = #{mailAddress},</if>
+            <if test="nation !=null and nation !=''"> nation=#{nation},</if>
+            <if test=" studentSex !=null and studentSex !=''"> student_sex=#{studentSex},</if>
+            <if test="political !=null and political !=''"> political = #{political},</if>
+            <if test="telephone !=null and telephone !=''"> telephone= #{telephone},</if>
+            <if test="subjectType !=null and subjectType !=''"> subject_type=#{subjectType},</if>
+            <if test=" tocampus !=null and tocampus !=''"> tocampus = #{tocampus},</if>
+            <if test="grade !=null and grade !=''">grade= #{grade},</if>
+            <if test="isstate !=null and isstate !=''">isstate= #{isstate},</if>
+            <if test="birthday !=null and birthday !=''"> birthday =#{birthday},</if>
+            <if test="note !=null and note !=''">note=#{note},</if>
+            <if test="addTime !=null and addTime !=''">add_time=#{addTime},</if>
+            <if test="addUserid !=null and addUserid !=''">add_userid=#{addUserid},</if>
+            <if test="editTime !=null and editTime !=''"> edit_time=#{editTime},</if>
+            <if test="editUserid !=null and editUserid !=''">edit_userid=#{editUserid}</if>
+        </set>
+        where id = #{id}
+    </update>
+    <delete id="remove">
+        delete from s_student_info where id = #{value}
+    </delete>
+    <delete id="batchRemove">
+        delete from s_student_info where id in
+        <foreach item="id" collection="array" open="(" separator=","
+                 close=")">
+            #{id}
+        </foreach>
+    </delete>
 
-
+    <select id="get" resultType="com.yizhi.student.domain.StudentInfoDO">
+        SELECT s_student_info.id,
+               s_student_info.student_id,
+               s_student_info.exam_id,
+               s_student_info.student_name,
+               s_student_info.card_id,
+               s_student_info.birthplace,
+               s_student_info.foreign_lanaguage,
+               s_student_info.class_id,
+               s_student_info.certify,
+               s_student_info.mail_address,
+               s_student_info.nation,
+               s_student_info.student_sex,
+               s_student_info.political,
+               s_student_info.telephone,
+               s_student_info.subject_type,
+               s_student_info.tocollege,
+               s_student_info.tocampus,
+               s_student_info.tomajor,
+               s_student_info.grade,
+               s_student_info.isstate,
+               s_student_info.birthday,
+               s_student_info.note,
+               s_student_info.add_time,
+               s_student_info.add_userid,
+               s_student_info.edit_time,
+               s_student_info.edit_userid
+        FROM s_student_info
+        WHERE s_student_info.id = #{id}
+    </select>
+    <select id="list" resultType="com.yizhi.student.domain.StudentInfoDO">
+        select
+        id,
+        student_id,
+        exam_id,
+        student_name,
+        card_id,
+        birthplace,
+        foreign_lanaguage,
+        class_id,
+        certify,
+        mail_address,
+        nation,
+        student_sex,
+        political,
+        telephone,
+        subject_type,
+        tocollege,
+        tocampus,
+        tomajor,
+        grade,
+        isstate,
+        birthday,
+        note,
+        add_time,
+        add_userid,
+        edit_time,
+        edit_userid
+        from s_student_info
+        <where>
+            <if test="id != null and id != ''">and id = #{id}</if>
+            <if test="class_id != null and class_id != ''">and class_id = #{classId}</if>
+            <if test="tomajor != null and tomajor != ''">and tomajor = #{tomajor}</if>
+            <if test="tocollege != null and tocollege != ''">and tocollege = #{tocollege}</if>
+        </where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+            <otherwise>
+                order by id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+    <select id="count" resultType="java.lang.Integer">
+        select count(*) from s_student_info
+        <where>
+            <if test="id != null and id != ''">and id = #{id}</if>
+            <if test="class_id != null and class_id != ''">and class_id = #{classId}</if>
+            <if test="tomajor != null and tomajor != ''">and tomajor = #{tomajor}</if>
+            <if test="tocollege != null and tocollege != ''">and tocollege = #{tocollege}</if>
+        </where>
+    </select>
 </mapper>
