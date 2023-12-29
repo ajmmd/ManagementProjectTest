@@ -81,11 +81,8 @@
             <if test=" tocampus !=null and tocampus !=''"> tocampus = #{tocampus},</if>
             <if test="grade !=null and grade !=''">grade= #{grade},</if>
             <if test="isstate !=null and isstate !=''">isstate= #{isstate},</if>
-            <if test="birthday !=null and birthday !=''"> birthday =#{birthday},</if>
             <if test="note !=null and note !=''">note=#{note},</if>
-            <if test="addTime !=null and addTime !=''">add_time=#{addTime},</if>
             <if test="addUserid !=null and addUserid !=''">add_userid=#{addUserid},</if>
-            <if test="editTime !=null and editTime !=''"> edit_time=#{editTime},</if>
             <if test="editUserid !=null and editUserid !=''">edit_userid=#{editUserid}</if>
         </set>
         where id = #{id}
